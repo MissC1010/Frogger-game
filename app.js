@@ -7,15 +7,19 @@ const logsRight = document.querySelectorAll(".log-right");
 const carsLeft = document.querySelectorAll(".car-left");
 const carsRight = document.querySelectorAll(".car-right");
 
-let currentIndex = 76;
-const width = 9;
+let currentIndex = 76; //position of frog
+const width = 9; //width of game board
 let timerId;
 let outcomeTimerId;
 let currentTime = 20;
 
+//e stands for event its an event object that holds the information of what key was pressed.
 function moveFrog(e) {
+  // Remove the "frog" class from the current square to clear its position
   squares[currentIndex].classList.remove("frog");
-
+  // Check which arrow key was pressed,
+  //when specific key in case is pressed check index of frog
+  //and see if its valid to move
   switch (e.key) {
     case "ArrowLeft":
       if (currentIndex % width !== 0) currentIndex -= 1;
@@ -35,6 +39,8 @@ function moveFrog(e) {
 }
 
 function autoMoveElements() {
+  //Decreases the remaining time and updates  display.
+  //Calls functions to move logs and cars.
   currentTime--;
   timeLeftDisplay.textContent = currentTime;
   logsLeft.forEach((logLeft) => moveLogLeft(logLeft));
@@ -49,6 +55,9 @@ function checkOutComes() {
 }
 
 function moveLogLeft(logLeft) {
+  //switch statement uses true as expression,
+  // evaluating whether the expression true matches any of the case values.
+  //if it matches case value it tells it to remove and add.
   switch (true) {
     case logLeft.classList.contains("l1"):
       logLeft.classList.remove("l1");
@@ -134,6 +143,9 @@ function moveCarRight(carRight) {
 
 function lose() {
   if (
+    // Check if the current square has the class "c1," representing a car.
+    // If move car functions update square classes correctly, "c1" effectively covers collisions with any car on the grid.
+    // Using "c1" as the representative class ensures seamless collision handling in the game.
     squares[currentIndex].classList.contains("c1") ||
     squares[currentIndex].classList.contains("l4") ||
     squares[currentIndex].classList.contains("l5") ||
@@ -156,16 +168,22 @@ function win() {
   }
 }
 
-startPauseButton.addEventListener("click", () => {
+startPauseButton.addEventListener("click", () => {\
+  // Check if the game is already running
   if (timerId) {
+  // If the game is running, stop both the main game timer and the outcome checker timer
     clearInterval(timerId);
     clearInterval(outcomeTimerId);
+     // Set both timers to null to indicate that they are stopped
     outcomeTimerId = null;
     timerId = null;
+    // Remove event listener for controlling the frog's movement
     document.removeEventListener("keyup", moveFrog);
   } else {
+      // If the game is not running, start the main game timer and the outcome checker timer
     timerId = setInterval(autoMoveElements, 1000);
     outcomeTimerId = setInterval(checkOutComes, 50);
+     // Add an event listener to allow controlling the frog's movement
     document.addEventListener("keyup", moveFrog);
   }
 });
