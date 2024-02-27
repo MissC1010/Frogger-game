@@ -168,22 +168,22 @@ function win() {
   }
 }
 
-startPauseButton.addEventListener("click", () => {\
+startPauseButton.addEventListener("click", () => {
   // Check if the game is already running
   if (timerId) {
-  // If the game is running, stop both the main game timer and the outcome checker timer
+    // If the game is running, stop both the main game timer and the outcome checker timer
     clearInterval(timerId);
     clearInterval(outcomeTimerId);
-     // Set both timers to null to indicate that they are stopped
+    // Set both timers to null to indicate that they are stopped
     outcomeTimerId = null;
     timerId = null;
     // Remove event listener for controlling the frog's movement
     document.removeEventListener("keyup", moveFrog);
   } else {
-      // If the game is not running, start the main game timer and the outcome checker timer
+    // If the game is not running, start the main game timer and the outcome checker timer
     timerId = setInterval(autoMoveElements, 1000);
     outcomeTimerId = setInterval(checkOutComes, 50);
-     // Add an event listener to allow controlling the frog's movement
+    // Add an event listener to allow controlling the frog's movement
     document.addEventListener("keyup", moveFrog);
   }
 });
